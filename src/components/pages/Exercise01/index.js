@@ -12,15 +12,13 @@
  */
 
 import './assets/styles.css'
+
 import { movies } from 'data/constants'
 import useCart from 'hooks/useCart'
 
 
 export default function Exercise01 () {
-
-  const { items , addMovie } = useCart();
-
-  const getTotal = () => 0 // TODO: Implement this
+  const { items , addMovie, increment, decrement, total } = useCart();
 
   return (
     <section className="exercise01">
@@ -62,13 +60,13 @@ export default function Exercise01 () {
                 </li>
               </ul>
               <div className="movies__cart-card-quantity">
-                <button onClick={() => console.log('Decrement quantity', item)}>
+                <button onClick={() => decrement(item)}>
                   -
                 </button>
                 <span>
                   {item.quantity}
                 </span>
-                <button onClick={() => console.log('Increment quantity', item)}>
+                <button onClick={() => increment(item)}>
                   +
                 </button>
               </div>
@@ -76,7 +74,7 @@ export default function Exercise01 () {
           ))}
         </ul>
         <div className="movies__cart-total">
-          <p>Total: ${getTotal()}</p>
+          <p>Total: ${total}</p>
         </div>
       </div>
     </section>
