@@ -112,7 +112,12 @@ const getDiscount = (discountRules,moviesIds) => {
         return rule.m.every( movieId => moviesIds.includes( movieId ) )
     });
 
-    console.log({ discountRule });
+    //Here we check that the  discount is only applied if ONLY the movies in
+    //the cart are in the discount rule m property
+    if( discountRule?.m.length !== moviesIds.length ){
+        return 0
+    }
+
     return discountRule?.discount ?? 0;
 }
 

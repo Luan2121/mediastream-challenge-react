@@ -15,89 +15,22 @@ import './assets/styles.css'
 
 import { movies } from 'data/constants'
 import useCart from 'hooks/useCart'
-import { Fragment } from 'react';
-
+import MoviesList from 'components/movies/MoviesList';
+import MoviesCart from 'components/cart/MoviesCart';
 
 export default function Exercise01 () {
   const { items , addMovie, increment, decrement, total, discount } = useCart();
-  console.log({ 
-    d: discount
-  });
   return (
     <section className="exercise01">
-      <div className="movies__list">
-        <ul>
-          {movies.map( movie => (
-            <li className="movies__list-card" key = {`movie-${movie.id}`}>
-              <ul>
-                <li>
-                  ID: {movie.id}
-                </li>
-                <li>
-                  Name: {movie.name}
-                </li>
-                <li>
-                  Price: ${movie.price}
-                </li>
-              </ul>
-              <button onClick={() => addMovie(movie)}>
-                Add to cart
-              </button>
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="movies__cart">
-        <ul>
-          {items.map( (item,index) => (
-            <li className="movies__cart-card" key = {`cart-item-${index}`} >
-              <ul>
-                <li>
-                  ID: {item.id}
-                </li>
-                <li>
-                  Name: {item.name}
-                </li>
-                <li>
-                  Price: ${item.price}
-                </li>
-              </ul>
-              <div className="movies__cart-card-quantity">
-                <button onClick={() => decrement(item)}>
-                  -
-                </button>
-                <span>
-                  {item.quantity}
-                </span>
-                <button onClick={() => increment(item)}>
-                  +
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <div className="movies__cart-total">
-          <div>
-            <p>Total: { discount > 0 
-              ? (
-                <Fragment>
-                  <del>${total}</del> 
-                  <span>${applyDiscount(total,discount)}</span>
-                </Fragment>
-              ) : `$${total}` } 
-            </p>
-          </div>
-        </div>
-        { discount > 0 && (
-          <div className = "movies__cart-discount">
-            <p>descuento aplicado!</p>
-          </div>
-        )}
-      </div>
+      <MoviesList  movies = {movies} onAddMovie = {addMovie} />
+      <MoviesCart 
+        items = {items}
+        total = {total}
+        discount = {discount}
+        onIncrement = {increment}
+        onDecrement = {decrement}
+      />
     </section>
   )
 } 
 
-const applyDiscount = (total,discount) => {
-  return total - (total * discount)
-}
