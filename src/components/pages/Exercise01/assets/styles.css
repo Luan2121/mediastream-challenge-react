@@ -90,3 +90,21 @@
   margin-top: 1em;
   font-size: 1.25em;
 }
+
+.movies__cart-total span {
+  display: inline-block;
+  margin-left: .75em;
+}
+
+.movies__cart-discount {
+  font: .75em;
+  color: #000;
+  margin-top: 1.25em;
+}
+
+.movies__cart-discount p {
+  background-color: var(--ms-green);
+  border-radius: .25em;
+  padding: .25em;
+  display: inline;
+}

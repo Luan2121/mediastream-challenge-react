@@ -15,11 +15,14 @@ import './assets/styles.css'
 
 import { movies } from 'data/constants'
 import useCart from 'hooks/useCart'
+import { Fragment } from 'react';
 
 
 export default function Exercise01 () {
-  const { items , addMovie, increment, decrement, total } = useCart();
-
+  const { items , addMovie, increment, decrement, total, discount } = useCart();
+  console.log({ 
+    d: discount
+  });
   return (
     <section className="exercise01">
       <div className="movies__list">
@@ -74,9 +77,27 @@ export default function Exercise01 () {
           ))}
         </ul>
         <div className="movies__cart-total">
-          <p>Total: ${total}</p>
+          <div>
+            <p>Total: { discount > 0 
+              ? (
+                <Fragment>
+                  <del>${total}</del> 
+                  <span>${applyDiscount(total,discount)}</span>
+                </Fragment>
+              ) : `$${total}` } 
+            </p>
+          </div>
         </div>
+        { discount > 0 && (
+          <div className = "movies__cart-discount">
+            <p>descuento aplicado!</p>
+          </div>
+        )}
       </div>
     </section>
   )
 } 
+
+const applyDiscount = (total,discount) => {
+  return total - (total * discount)
+}
