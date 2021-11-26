@@ -26,7 +26,9 @@ const useCart = () => {
     }) , [addMovie, state, increment, decrement] );
 }
 
-const initialState = {
+//by passing discount rules to initial state 
+//we can update the rules later
+export const initialState = {
     discountRules,
     movies: [
         {
@@ -42,11 +44,11 @@ const initialState = {
 }
 
 // Actions 
-const ADD_MOVIE_TO_CART = 'ADD_MOVIE_TO_CART'
-const INCREMENT = 'INCREMENT'
-const DECREMENT = 'DECREMENT'
+export const ADD_MOVIE_TO_CART = 'ADD_MOVIE_TO_CART'
+export const INCREMENT = 'INCREMENT'
+export const DECREMENT = 'DECREMENT'
 // Reducer
-const cartReducer = (state,action) => {
+export const cartReducer = (state,action) => {
     const { name , payload } = action
     switch(name){
         case ADD_MOVIE_TO_CART:
@@ -88,7 +90,7 @@ const addMovieToCart = (state,payload) => {
     let newMoviesIds = [ ...new Set( [...state.moviesIds , payload.movie.id ] ) ]
     let newMovies = state.movies.map( ( movie ) => {
         if( movie.id === payload.movie.id ){
-            movieAlreadyAdded = true;
+            movieAlreadyAdded = false;
             return { ...movie , quantity: movie.quantity + 1};
         }
         return movie;
@@ -111,7 +113,6 @@ const getDiscount = (discountRules,moviesIds) => {
     const discountRule = discountRules.find( rule => {
         return rule.m.every( movieId => moviesIds.includes( movieId ) )
     });
-
     //Here we check that the  discount is only applied if ONLY the movies in
     //the cart are in the discount rule m property
     if( discountRule?.m.length !== moviesIds.length ){

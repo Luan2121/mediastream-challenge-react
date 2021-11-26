@@ -17,11 +17,8 @@ import MovieLibraryActions from "components/movieLibrary/MovieLibraryActions";
 import useMovies from "hooks/useMovies";
 import "./assets/styles.css";
 
-
 export default function Exercise02 () {
-
   const { movies, loading, fetchCount, applyFilter, toggleOrder, order } = useMovies();
-
   return (
     <section className="movie-library">
       <div className= "movie-library__inner">
@@ -48,7 +45,6 @@ export default function Exercise02 () {
           <MovieLibrary movies = {movies} />
         )}
       </div>
-
     </section>
   )
 }
