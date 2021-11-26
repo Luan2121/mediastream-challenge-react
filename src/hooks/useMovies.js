@@ -1,4 +1,4 @@
-import { useState , useEffect, useCallback, useMemo } from 'react';
+import { useState , useEffect, useCallback } from 'react';
 
 const ASCENDING = "Ascending";
 const DESCENDING = "Descending";
@@ -61,7 +61,7 @@ const useMovies = () => {
     handleMovieFetch()
   }, [setFetchCount, setLoading, setFilteredMovies,setMovies]);
 
-	return useMemo( () => ({ movies: filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder }) , [ filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder ] )
+	return { movies: filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder }
 }
 
 const fetchMovies = () => {

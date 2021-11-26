@@ -6,14 +6,19 @@ const useGenres = () => {
   const [error,setError] = useState(null)
   
 	useEffect(() => {
-			const handleMovieFetch = () => {
+			const handleGenreFetch = async () => {
 				setLoading(true)
-				fetchGenres()
-					.then( genres => setGenres(genres) )
-					.catch( error => setError(error) )
-					.finally( setLoading(false) )
+				try{
+					const genres = await fetchGenres();
+					setGenres(genres);
+
+				}catch(error){
+					setError(error);
+				}finally {
+					setLoading(false);
+				}
 			}
-		handleMovieFetch()
+		handleGenreFetch()
 	}, []);
   
   return { genres, loading, error }
