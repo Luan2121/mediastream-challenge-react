@@ -1,4 +1,4 @@
-import { useState , useEffect, useCallback } from 'react';
+import { useState , useEffect, useCallback, useMemo } from 'react';
 
 const ASCENDING = "Ascending";
 const DESCENDING = "Descending";
@@ -44,32 +44,33 @@ const useMovies = () => {
 	} , [setOrder, setFilteredMovies] );
 
   useEffect(() => {
-		const handleMovieFetch = () => {
-			setLoading(true)
-			setFetchCount( oldCount => oldCount + 1 )
-			fetchMovies()
-				.then( movies => {
-					const orderedMovies = orderMovies(movies,ASCENDING);
-					setMovies(orderedMovies)
-					setFilteredMovies(orderedMovies)
-				})
-				.catch( error => setError(error) )
-				.finally( setLoading(false) )
-			console.log('Getting movies')
+		setLoading(true)
+		const handleMovieFetch = async () => {
+			try{
+				setFetchCount( oldCount => oldCount + 1 )
+				const movies = await fetchMovies();
+				const orderedMovies = orderMovies(movies,ASCENDING);
+				setMovies(orderedMovies)
+				setFilteredMovies(orderedMovies)
+			}catch(error){
+				setError(error);
+			}finally {
+				setLoading(false);
+			}
 		}
     handleMovieFetch()
-  }, [setFetchCount]);
+  }, [setFetchCount, setLoading, setFilteredMovies,setMovies]);
 
-	return { movies: filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder }
+	return useMemo( () => ({ movies: filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder }) , [ filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder ] )
 }
 
 const fetchMovies = () => {
 	return fetch('http://localhost:3001/movies?_limit=50')
-	.then(res => res.json())
-	.then(json => json)
-	.catch((error) => {
-		return error;
-	})
+		.then(res => res.json())
+		.then(json => json)
+		.catch((error) => {
+			return error;
+		})
 }
 
 
