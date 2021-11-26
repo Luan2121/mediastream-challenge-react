@@ -90,7 +90,7 @@ const addMovieToCart = (state,payload) => {
     let newMoviesIds = [ ...new Set( [...state.moviesIds , payload.movie.id ] ) ]
     let newMovies = state.movies.map( ( movie ) => {
         if( movie.id === payload.movie.id ){
-            movieAlreadyAdded = false;
+            movieAlreadyAdded = true;
             return { ...movie , quantity: movie.quantity + 1};
         }
         return movie;
