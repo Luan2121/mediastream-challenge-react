@@ -1,18 +1,56 @@
-import { useState , useEffect } from 'react';
+import { useState , useEffect, useCallback } from 'react';
+
+const ASCENDING = "Ascending";
+const DESCENDING = "Descending";
+
+const orderMovies = (movies,currentOrder) => {
+	return movies.sort( (movieA,movieB) => {
+		if( movieA.year < movieB.year ){
+			return -1 * ( currentOrder.toUpperCase() === "ASCENDING" ? 1 : -1 );
+		}
+		if( movieA.year > movieB.year ){
+			return 1 * ( currentOrder.toUpperCase() === "ASCENDING" ? 1 : -1 );
+		}
+		return 0;
+	})
+}
 
 const useMovies = () => {
 
   const [movies, setMovies] = useState([])
+	const [filteredMovies, setFilteredMovies ] = useState([])
   const [fetchCount, setFetchCount] = useState(0)
   const [loading, setLoading] = useState(false)
 	const [error,setError] = useState(null)
+	const [order,setOrder] = useState(ASCENDING);
+
+	const applyFilter = useCallback( ({ genre }) => {
+		if(genre === "all"){
+			setFilteredMovies(movies);
+			return;
+		}
+		setFilteredMovies( movies.filter( movie => movie.genres.includes( genre ) ))
+	}, [setFilteredMovies,movies])
+
+	const toggleOrder = useCallback( () => {
+		setOrder( oldOrder => {
+			const newOrder = oldOrder === DESCENDING ? ASCENDING : DESCENDING;
+			setFilteredMovies( oldMovies => orderMovies(oldMovies,newOrder) )
+			return newOrder
+		})
+
+	} , [setOrder, setFilteredMovies] );
 
   useEffect(() => {
 		const handleMovieFetch = () => {
 			setLoading(true)
 			setFetchCount( oldCount => oldCount + 1 )
 			fetchMovies()
-				.then( movies => setMovies(movies) )
+				.then( movies => {
+					const orderedMovies = orderMovies(movies,ASCENDING);
+					setMovies(orderedMovies)
+					setFilteredMovies(orderedMovies)
+				})
 				.catch( error => setError(error) )
 				.finally( setLoading(false) )
 			console.log('Getting movies')
@@ -20,7 +58,7 @@ const useMovies = () => {
     handleMovieFetch()
   }, [setFetchCount]);
 
-	return { movies, loading, error, fetchCount }
+	return { movies: filteredMovies, loading, error, fetchCount, applyFilter, order, toggleOrder }
 }
 
 const fetchMovies = () => {

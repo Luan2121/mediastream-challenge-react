@@ -13,13 +13,14 @@
  */
 
 import MovieLibrary from "components/movieLibrary/MovieLibrary";
+import MovieLibraryActions from "components/movieLibrary/MovieLibraryActions";
 import useMovies from "hooks/useMovies";
 import "./assets/styles.css";
 
 
 export default function Exercise02 () {
 
-  const { movies, loading, fetchCount } = useMovies();
+  const { movies, loading, fetchCount, applyFilter, toggleOrder, order } = useMovies();
 
   return (
     <section className="movie-library">
@@ -27,12 +28,15 @@ export default function Exercise02 () {
         <h1 className="movie-library__title">
           Movie Library
         </h1>
-        <div className="movie-library__actions">
-          <select name="genre" placeholder="Search by genre...">
-            <option value="genre1">Genre 1</option>
-          </select>
-          <button>Order Descending</button>
-        </div>
+        <MovieLibraryActions
+          order = {order} 
+          onOrderButtonClick = {() => {
+            toggleOrder()
+          }}
+          onSelectGenre = { genre => {
+            applyFilter({ genre })
+          }}
+        />
         {loading ? (
           <div className="movie-library__loading">
             <p>Loading...</p>

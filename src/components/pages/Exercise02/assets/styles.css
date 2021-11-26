@@ -26,11 +26,20 @@
 
 .movie-library__actions select {
   width: 100%;
-  padding: .25em;
+  padding: .40em .25em;
+  border: 2px solid var(--ms-green);
+  border-radius: .3em 0 0 .3em;
+  font: inherit;
 }
 
 .movie-library__actions button {
   white-space: nowrap;
+  background-color: var(--ms-green);
+  font: inherit;
+  border: 0;
+  padding: .25em .80em;
+  border-radius: 0 .3em .3em 0;
+  cursor: pointer;
 }
 
 .movie-library__loading {
