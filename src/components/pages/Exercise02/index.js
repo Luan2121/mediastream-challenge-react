@@ -25,18 +25,20 @@ export default function Exercise02 () {
   return (
     <section className="movie-library">
       <div className= "movie-library__inner">
-        <h1 className="movie-library__title">
-          Movie Library
-        </h1>
-        <MovieLibraryActions
-          order = {order} 
-          onOrderButtonClick = {() => {
-            toggleOrder()
-          }}
-          onSelectGenre = { genre => {
-            applyFilter({ genre })
-          }}
-        />
+        <div className = "movie-library__nav">
+          <h1 className="movie-library__title">
+            Movie Library
+          </h1>
+          <MovieLibraryActions
+            order = {order} 
+            onOrderButtonClick = {() => {
+              toggleOrder()
+            }}
+            onSelectGenre = { genre => {
+              applyFilter({ genre })
+            }}
+          />
+        </div>
         {loading ? (
           <div className="movie-library__loading">
             <p>Loading...</p>

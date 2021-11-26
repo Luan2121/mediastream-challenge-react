@@ -29,8 +29,10 @@ const useMovies = () => {
 			setFilteredMovies(movies);
 			return;
 		}
-		setFilteredMovies( movies.filter( movie => movie.genres.includes( genre ) ))
-	}, [setFilteredMovies,movies])
+		setFilteredMovies( 
+			orderMovies( movies.filter( movie => movie.genres.includes( genre )) , order )
+		)
+	}, [setFilteredMovies,movies,order])
 
 	const toggleOrder = useCallback( () => {
 		setOrder( oldOrder => {
